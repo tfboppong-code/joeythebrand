@@ -1,5 +1,6 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBngDqe0m7M2n1Loa26gslVDkDtEegz8FI",
@@ -11,8 +12,12 @@ const firebaseConfig = {
   measurementId: "G-GP81WJ5XQ3",
 };
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+// ✅ Prevent multiple Firebase instances
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
-// Add this line for Google login
+// ✅ AUTH
+export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
+
+// ✅ FIRESTORE (THIS WAS MISSING)
+export const db = getFirestore(app);

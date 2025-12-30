@@ -30,8 +30,30 @@ interface FirestoreProduct {
 }
 
 const tabs: Record<Gender, string[]> = {
-  men: ["Shorts", "Kaftans", "Shirts", "Trousers", "T-shirts", "Lounge wear", "Jackets", "Suits"],
-  women: ["Blazers", "Suits", "Trousers", "Shirts", "T-shirts", "Skirts", "Dresses", "Bustiers", "Kaftans", "Shorts"],
+  men: [
+    "Shorts",
+    "Kaftans",
+    "Shirts",
+    "Trousers",
+    "T-shirts",
+    "Lounge wear",
+    "Jackets",
+    "Suits",
+    "Bespoke",
+  ],
+  women: [
+    "Blazers",
+    "Suits",
+    "Trousers",
+    "Shirts",
+    "T-shirts",
+    "Skirts",
+    "Dresses",
+    "Bustiers",
+    "Kaftans",
+    "Shorts",
+    "Bespoke",
+  ],
 };
 
 function normalize(v?: string) {
@@ -101,11 +123,16 @@ export default function ShopPage() {
   }, [toast]);
 
   const filtered = products.filter(
-    (p) => p.gender === activeGender && normalize(p.category) === normalize(activeCategory)
+    (p) =>
+      p.gender === activeGender &&
+      normalize(p.category) === normalize(activeCategory)
   );
 
   const totalSlots = 6;
-  const display = [...filtered, ...Array(Math.max(0, totalSlots - filtered.length)).fill(null)];
+  const display = [
+    ...filtered,
+    ...Array(Math.max(0, totalSlots - filtered.length)).fill(null),
+  ];
 
   const handleAdd = (p: Product) => {
     addToCart({
@@ -127,7 +154,6 @@ export default function ShopPage() {
   return (
     <main className="min-h-screen bg-gray-50 p-6 pt-24 font-sans">
       <div className="max-w-6xl mx-auto">
-        {/* BACK BUTTON */}
         <button
           type="button"
           onClick={goBack}
@@ -136,7 +162,6 @@ export default function ShopPage() {
           ← Back
         </button>
 
-        {/* GENDER BUTTONS */}
         <section className="mb-6 flex gap-4">
           {(["men", "women"] as Gender[]).map((g) => (
             <button
@@ -150,7 +175,6 @@ export default function ShopPage() {
           ))}
         </section>
 
-        {/* CATEGORY BUTTONS */}
         <section className="mb-6 flex flex-wrap gap-3">
           {tabs[activeGender].map((cat) => (
             <button
@@ -164,11 +188,13 @@ export default function ShopPage() {
           ))}
         </section>
 
-        {/* PRODUCTS GRID */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading
             ? Array.from({ length: totalSlots }).map((_, i) => (
-                <div key={i} className="p-4 bg-white rounded-lg shadow animate-pulse h-72" />
+                <div
+                  key={i}
+                  className="p-4 bg-white rounded-lg shadow animate-pulse h-72"
+                />
               ))
             : display.map((p, idx) =>
                 p ? (
@@ -191,8 +217,12 @@ export default function ShopPage() {
                       )}
                     </div>
 
-                    <h2 className="font-elegant font-semibold text-xl text-gray-900 mb-2 tracking-wide">{p.name}</h2>
-                    <p className="text-gray-800 font-medium mb-4">GH₵{p.price}</p>
+                    <h2 className="font-elegant font-semibold text-xl text-gray-900 mb-2 tracking-wide">
+                      {p.name}
+                    </h2>
+                    <p className="text-gray-800 font-medium mb-4">
+                      GH₵{p.price}
+                    </p>
 
                     <div className="mt-auto flex gap-2">
                       <button
@@ -212,12 +242,14 @@ export default function ShopPage() {
                     </div>
                   </article>
                 ) : (
-                  <div key={`placeholder-${idx}`} className="p-4 bg-white/20 rounded-lg shadow-inner animate-pulse h-72" />
+                  <div
+                    key={`placeholder-${idx}`}
+                    className="p-4 bg-white/20 rounded-lg shadow-inner animate-pulse h-72"
+                  />
                 )
               )}
         </div>
 
-        {/* TOAST */}
         {toast && (
           <div className="fixed right-6 bottom-6 bg-gray-900 text-white font-medium rounded shadow-lg px-5 py-2">
             {toast}
